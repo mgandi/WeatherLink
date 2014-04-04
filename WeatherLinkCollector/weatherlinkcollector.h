@@ -11,7 +11,7 @@ class WeatherLinkCollector : public QObject
 {
     Q_OBJECT
 public:
-    WeatherLinkCollector(const QString &name, const QUrl &location, quint32 interval = 30, quint32 depth = 7200, QObject *parent = 0);
+    WeatherLinkCollector(const QString &name, const QUrl &location, const QString &path = "", quint32 interval = 30, quint32 depth = 7200, QObject *parent = 0);
     ~WeatherLinkCollector();
 
     void start();

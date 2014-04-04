@@ -72,10 +72,11 @@ bool WeatherLinkLauncher::start()
         connect(process, SIGNAL(readyReadStandardOutput()),
                 this, SLOT(readyReadStandardOutput()));
 
-        QString command = QString("%1/wl_collector -n %2 -u %3")
+        QString command = QString("%1/wl_collector -n %2 -u %3 -p %4")
                 .arg(QCoreApplication::applicationDirPath())
                 .arg(name)
-                .arg(url);
+                .arg(url)
+                .arg(d->dbPath);
         process->start(command);
         d->processes += process;
     }

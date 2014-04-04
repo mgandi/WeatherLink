@@ -55,17 +55,22 @@ typedef struct {
 class WeatherLinkCollectorPrivate
 {
 public:
-    WeatherLinkCollectorPrivate(const QString &station, const QUrl &url, const quint32 intervalSeconds, const quint32 depthSeconds) :
+    WeatherLinkCollectorPrivate(const QString &station, const QUrl &url, const QString &where, const quint32 intervalSeconds, const quint32 depthSeconds) :
         name(station),
         location(url),
+        path(where),
         interval(intervalSeconds),
         depth(depthSeconds),
         db(QSqlDatabase::addDatabase("QSQLITE"))
     {
-        // We store database file into user home folder
-        QString path(QDir::home().path());
-        path.append(QDir::separator()).append("weatherlink.sqlite");
-        path = QDir::toNativeSeparators(path);
+        // Compute path if not provided
+        if (path.isEmpty()) {
+            path = QString(QDir::home().path());
+            path.append(QDir::separator()).append("weatherlink.sqlite");
+            path = QDir::toNativeSeparators(path);
+        }
+
+        // Set database name
         db.setDatabaseName(path);
 
         // Open database
@@ -82,6 +87,7 @@ public:
     int timerId;
     QString name;
     QUrl location;
+    QString path;
     quint32 interval, depth;
     QSqlDatabase db;
 
@@ -92,9 +98,9 @@ public:
 
 
 
-WeatherLinkCollector::WeatherLinkCollector(const QString &name, const QUrl &location, quint32 interval, quint32 depth, QObject *parent) :
+WeatherLinkCollector::WeatherLinkCollector(const QString &name, const QUrl &location, const QString &path, quint32 interval, quint32 depth, QObject *parent) :
     QObject(parent),
-    d(new WeatherLinkCollectorPrivate(name, location, interval, depth))
+    d(new WeatherLinkCollectorPrivate(name, location, path, interval, depth))
 {
 }
 
@@ -146,7 +152,7 @@ void WeatherLinkCollector::parse()
 
     // Extract data
     QRegExp regex("<td width=\"\\d+\" class=\"\\w+\">([A-Za-z\\s]+)</td>" \
-                  "<td width=\"\\d+\" class=\"\\w+\">(([NSEO]+&nbsp;)?(-?\\d+\\.?\\d?)\\s?(C|%|mb|km/h|&deg;)|&nbsp;)</td>" \
+                  "<td width=\"\\d+\" class=\"\\w+\">(([NSEW]+&nbsp;)?(-?\\d+\\.?\\d?)\\s?(C|%|mb|km/h|&deg;)|&nbsp;)</td>" \
                   "<td width=\"\\d+\" class=\"\\w+\">((-?\\d+\\.?\\d?)\\s?(C|%|mb|km/h)|&nbsp;)</td>" \
                   "<td width=\"\\d+\" class=\"\\w+\">(\\d\\d:\\d\\d|&nbsp;)</td>" \
                   "<td width=\"\\d+\" class=\"\\w+\">((-?\\d+\\.?\\d?)\\s?(C|%|mb|km/h)|&nbsp;)</td>" \
@@ -196,6 +202,9 @@ void WeatherLinkCollector::parse()
                 data.maxWindSpeed = captures[7].toDouble();
             } else if (captures[1] == "Wind Direction") {
                 data.currentWindDirection = captures[4].toUShort();
+                if (data.currentWindDirection > 360) {
+                    qDebug() << "Error on wind direction:" << qPrintable(captures[0]);
+                }
             } else if (captures[1] == "Solar Radiation") {
             } else if (captures[1] == "UV Radiation") {
             } else if (captures[1] == "Average Wind Speed") {
