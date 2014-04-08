@@ -10,7 +10,9 @@
 
 #include <QDir>
 
-typedef struct {
+class WeatherLinkData
+{
+public:
     QDateTime timeStamp;
 
     double currentOutsideTemperature;
@@ -50,7 +52,141 @@ typedef struct {
     double averageWindSpeed2Minutes;
     double averageWindSpeed10Minutes;
     double windGust;
-} WeatherLinkData;
+
+    WeatherLinkData()
+    {}
+
+    WeatherLinkData(const WeatherLinkData &other)
+    {
+        timeStamp = other.timeStamp;
+
+        currentOutsideTemperature = other.currentOutsideTemperature;
+        maxOutsideTemperature = other.maxOutsideTemperature;
+        minOutsideTemperature = other.minOutsideTemperature;
+
+        currentOutsideHumidity = other.currentOutsideHumidity;
+        maxOutsideHumidity = other.maxOutsideHumidity;
+        minOutsideHumidity = other.minOutsideHumidity;
+
+        currentInsideTemperature = other.currentInsideTemperature;
+        maxInsideTemperature = other.maxInsideTemperature;
+        minInsideTemperature = other.minInsideTemperature;
+
+        currentInsideHumidity = other.currentInsideHumidity;
+        maxInsideHumidity = other.maxInsideHumidity;
+        minInsideHumidity = other.minInsideHumidity;
+
+        currentHeatIndex = other.currentHeatIndex;
+        maxHeatIndex = other.maxHeatIndex;
+
+        currentWindChill = other.currentWindChill;
+        minWindChill = other.minWindChill;
+
+        currentDewPoint = other.currentDewPoint;
+        maxDewPoint = other.maxDewPoint;
+        minDewPoint = other.minDewPoint;
+
+        currentPressure = other.currentPressure;
+        maxPressure = other.maxPressure;
+        minPressure = other.minPressure;
+
+        currentWindSpeed = other.currentWindSpeed;
+        maxWindSpeed = other.maxWindSpeed;
+
+        currentWindDirection = other.currentWindDirection;
+        averageWindSpeed2Minutes = other.averageWindSpeed2Minutes;
+        averageWindSpeed10Minutes = other.averageWindSpeed10Minutes;
+        windGust = other.windGust;
+    }
+
+    bool operator ==(const WeatherLinkData &other)
+    {
+        if (currentOutsideTemperature != other.currentOutsideTemperature) { return false; }
+        if (maxOutsideTemperature != other.maxOutsideTemperature) { return false; }
+        if (minOutsideTemperature != other.minOutsideTemperature) { return false; }
+
+        if (currentOutsideHumidity != other.currentOutsideHumidity) { return false; }
+        if (maxOutsideHumidity != other.maxOutsideHumidity) { return false; }
+        if (minOutsideHumidity != other.minOutsideHumidity) { return false; }
+
+        if (currentInsideTemperature != other.currentInsideTemperature) { return false; }
+        if (maxInsideTemperature != other.maxInsideTemperature) { return false; }
+        if (minInsideTemperature != other.minInsideTemperature) { return false; }
+
+        if (currentInsideHumidity != other.currentInsideHumidity) { return false; }
+        if (maxInsideHumidity != other.maxInsideHumidity) { return false; }
+        if (minInsideHumidity != other.minInsideHumidity) { return false; }
+
+        if (currentHeatIndex != other.currentHeatIndex) { return false; }
+        if (maxHeatIndex != other.maxHeatIndex) { return false; }
+
+        if (currentWindChill != other.currentWindChill) { return false; }
+        if (minWindChill != other.minWindChill) { return false; }
+
+        if (currentDewPoint != other.currentDewPoint) { return false; }
+        if (maxDewPoint != other.maxDewPoint) { return false; }
+        if (minDewPoint != other.minDewPoint) { return false; }
+
+        if (currentPressure != other.currentPressure) { return false; }
+        if (maxPressure != other.maxPressure) { return false; }
+        if (minPressure != other.minPressure) { return false; }
+
+        if (currentWindSpeed != other.currentWindSpeed) { return false; }
+        if (maxWindSpeed != other.maxWindSpeed) { return false; }
+
+        if (currentWindDirection != other.currentWindDirection) { return false; }
+        if (averageWindSpeed2Minutes != other.averageWindSpeed2Minutes) { return false; }
+        if (averageWindSpeed10Minutes != other.averageWindSpeed10Minutes) { return false; }
+        if (windGust != other.windGust) { return false; }
+
+        return true;
+    }
+
+    WeatherLinkData &operator=(const WeatherLinkData &other)
+    {
+        timeStamp = other.timeStamp;
+
+        currentOutsideTemperature = other.currentOutsideTemperature;
+        maxOutsideTemperature = other.maxOutsideTemperature;
+        minOutsideTemperature = other.minOutsideTemperature;
+
+        currentOutsideHumidity = other.currentOutsideHumidity;
+        maxOutsideHumidity = other.maxOutsideHumidity;
+        minOutsideHumidity = other.minOutsideHumidity;
+
+        currentInsideTemperature = other.currentInsideTemperature;
+        maxInsideTemperature = other.maxInsideTemperature;
+        minInsideTemperature = other.minInsideTemperature;
+
+        currentInsideHumidity = other.currentInsideHumidity;
+        maxInsideHumidity = other.maxInsideHumidity;
+        minInsideHumidity = other.minInsideHumidity;
+
+        currentHeatIndex = other.currentHeatIndex;
+        maxHeatIndex = other.maxHeatIndex;
+
+        currentWindChill = other.currentWindChill;
+        minWindChill = other.minWindChill;
+
+        currentDewPoint = other.currentDewPoint;
+        maxDewPoint = other.maxDewPoint;
+        minDewPoint = other.minDewPoint;
+
+        currentPressure = other.currentPressure;
+        maxPressure = other.maxPressure;
+        minPressure = other.minPressure;
+
+        currentWindSpeed = other.currentWindSpeed;
+        maxWindSpeed = other.maxWindSpeed;
+
+        currentWindDirection = other.currentWindDirection;
+        averageWindSpeed2Minutes = other.averageWindSpeed2Minutes;
+        averageWindSpeed10Minutes = other.averageWindSpeed10Minutes;
+        windGust = other.windGust;
+
+        return *this;
+    }
+};
 
 class WeatherLinkCollectorPrivate
 {
