@@ -423,7 +423,7 @@ void WeatherLinkCollector::log()
                        .arg(d->lastData.minOutsideTemperature)
 
                        .arg(d->lastData.currentOutsideHumidity)
-                       .arg(d->lastData.minOutsideHumidity)
+                       .arg(d->lastData.maxOutsideHumidity)
                        .arg(d->lastData.minOutsideHumidity)
 
                        .arg(d->lastData.currentInsideTemperature)
